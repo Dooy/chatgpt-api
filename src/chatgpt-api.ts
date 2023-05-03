@@ -236,6 +236,17 @@ export class ChatGPTAPI {
                     }
 
                     result.detail = response
+
+                    //获取token 发出来
+                    const promptTokens = numTokens
+                    const completionTokens = this.getTokenCount(result.text)
+                    result.detail.usage = {
+                      prompt_tokens: promptTokens,
+                      completion_tokens: completionTokens,
+                      total_tokens: promptTokens + completionTokens
+                    }
+                    //获取token 发出来
+
                     onProgress?.(result)
                   }
                 } catch (err) {
@@ -452,6 +463,10 @@ export class ChatGPTAPI {
     // TODO: use a better fix in the tokenizer
     text = text.replace(/<\|endoftext\|>/g, '')
 
+    return tokenizer.encode(text).length
+  }
+  getTokenCount(text: string) {
+    text = text.replace(/<\|endoftext\|>/g, '')
     return tokenizer.encode(text).length
   }
 
