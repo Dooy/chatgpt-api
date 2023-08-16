@@ -83,6 +83,7 @@ export async function fetchSSE(
   } else {
     for await (const chunk of streamAsyncIterable(res.body)) {
       const str = new TextDecoder().decode(chunk)
+      //console.log(str );
       feed(str)
     }
   }

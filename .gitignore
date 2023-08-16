@@ -2,6 +2,7 @@
 
 *.swp
 .idea
+/demos/demo-sse.ts
 
 # dependencies
 /node_modules

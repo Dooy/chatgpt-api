@@ -41,6 +41,7 @@ export type SendMessageOptions = {
   conversationId?: string
   messageId?: string
   stream?: boolean
+  maxChatTime?: number //对话次数最好是2 4 6 8 偶数
   systemMessage?: string
   timeoutMs?: number
   onProgress?: (partialResponse: ChatMessage) => void

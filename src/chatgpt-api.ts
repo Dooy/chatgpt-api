@@ -280,7 +280,7 @@ export class ChatGPTAPI {
             const response: types.openai.CreateChatCompletionResponse =
               await res.json()
             if (this._debug) {
-              console.log(response)
+              //console.log(response)
             }
 
             if (response?.id) {
@@ -371,7 +371,9 @@ export class ChatGPTAPI {
 
   protected async _buildMessages(text: string, opts: types.SendMessageOptions) {
     const { systemMessage = this._systemMessage } = opts
-    let { parentMessageId } = opts
+    let { parentMessageId, maxChatTime } = opts
+
+    //let maxChatTime= 4; //一定要偶数
 
     const userLabel = USER_LABEL_DEFAULT
     const assistantLabel = ASSISTANT_LABEL_DEFAULT
@@ -397,8 +399,9 @@ export class ChatGPTAPI {
         ])
       : messages
     let numTokens = 0
-
+    let chatTime = 0
     do {
+      chatTime++
       const prompt = nextMessages
         .reduce((prompt, message) => {
           switch (message.role) {
@@ -429,6 +432,7 @@ export class ChatGPTAPI {
       if (!parentMessageId) {
         break
       }
+      if (maxChatTime && chatTime > maxChatTime) break //对话次数大于设定次数
 
       const parentMessage = await this._getMessageById(parentMessageId)
       if (!parentMessage) {
