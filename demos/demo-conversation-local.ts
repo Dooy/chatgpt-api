@@ -16,7 +16,7 @@ async function main() {
   const api = new ChatGPTAPI({
     apiKey: process.env.OPENAI_API_KEY,
     apiBaseUrl: process.env.OPENAI_API_BASE_URL + '/v1',
-    debug: true
+    debug: false
   })
 
   const prompt = 'Write a poem about cats.'
@@ -68,7 +68,7 @@ async function main() {
   res = await oraPromise(
     api.sendMessage(prompt4, {
       parentMessageId: res.id,
-      maxChatTime: 6
+      maxChatTime: 6 //对话次数限制
     }),
     {
       text: prompt4
